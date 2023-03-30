@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <style>
+        form>input.form-control {
+            width: 350px !important;
+        }
+    </style>
+    <div class="container-fluid px-0">
+        <div class="row gx-0">
+            <div class="col vh-100">
+                <div class="d-flex align-items-center justify-content-center h-100">
+                    <form action="./task-Userlogin/user-default.html">
+                        <h1 class="text-center h2"><b>Sign In</b></h1>
+                        <p class="text-center  text-secondary">Your Social Campaign</p>
+
+                        <input type="email" class="form-control w-100" id="email-id" placeholder="Email" required />
+                        <div><br></div>
+                        <input type="password" class="form-control w-100" id="password" placeholder="Password"
+                            required />
+                        <div class="text-center"><br><a href="#" class="link-primary text-decoration-none">Forgot
+                                Password?</a><br><br></div>
+                        <input type="submit" class="btn btn-primary w-100" id="submitButton" value="Sign In" />
+                        <p class="text-center"><br>Not a member yet? <a class="link-primary text-decoration-none"
+                                href="./task-Userlogin/user-list/add-user-new.html">Sign up</a></p>
+
+                        <br>
+                        <br>
+                        <div class="container d-flex justify-content-between">
+
+                            <select class="border-0 bg-white ">
+                                <option value="EN" selected>English</option>
+                                <option value="FR">French</option>
+                                <option value="TA">Tamil</option>
+                            </select>
+
+
+                            <div><a class="text-decoration-none" href="#"> Terms </a><a class="text-decoration-none"
+                                    href="#">Plans </a><a class="text-decoration-none" href="#">Contact Us</a></div>
+
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            <div class="col vh-100 bg-primary">
+
+                <div class="mt-5 pt-5 text-white d-flex flex-column justify-content-center align-items-center">
+                    <img class="h-50 w-50" src="./task-Userlogin/assets/auth-screens.png.png" alt="authentication">
+                    <h2 class="w-50 mx-auto">Fast, Effective and Productive</h2>
+                    <p class="w-50 mx-auto">In this kind of post, <a href="#"
+                            class="text-decoration-none text-warning">the blogger</a>
+                        introduces a person they've interviewed and provides some background information about <a
+                            href="#" class="text-decoration-none text-warning">the interviewee</a> and their work
+                        following this is a transcript of the interview</p>
+                </div>
+            </div>
+        </div>
+        <script>
+            let count = 0;
+            if (count === 0) {
+                document.getElementById("submitButton").addEventListener("click", eventLister)
+            
+
+            let user;
+            async function get(url) {
+
+                const response = await fetch(url);
+
+                user = await response.json();
+                console.log(user);
+
+                let val2 = validator(user);
+                return val2;
+            }
+
+
+            function eventLister(event) {
+                    if (get("https://gorest.co.in/public/v2/users?access-token=3803732897851d7e9809cc003e1b8cc80ad27dcaa86b741c07894ed034de8f21") === true) {
+                        
+                        return true;
+                    }
+                    else {
+                        event.preventDefault();
+                        return false;
+                    }
+                
+            }
+
+            function validator(array) {
+
+                const userEmail = array.filter((data) => data.email === document.getElementById("email-id").value)
+                if (userEmail.length > 0) {
+                    console.log(userEmail)
+                    if (userEmail[0]["id"] == document.getElementById("password").value) {
+                        
+                        document.getElementById("submitButton").removeEventListener("click", eventLister)
+                        document.getElementById("submitButton").value = "Continue"
+                        //document.querySelector("#submitButton").disabled = false;
+                        return true;
+                    }
+                    else {
+                        alert(`Password Error: ${userEmail[0]["id"]}`);
+                        //document.querySelector("#submitButton").disabled = true;
+                        return false;
+                    }
+                }
+                else {
+                    alert("Email address not registered! Press Sign up to Register")
+                    return false
+                }
+
+
+            }
+        }
+        else {
+            console.log(count)
+        }
+
+        </script>
+</body>
+
+</html>

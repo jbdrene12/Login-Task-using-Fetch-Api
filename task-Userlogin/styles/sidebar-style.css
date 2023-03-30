@@ -1,0 +1,20 @@
+div#side-bar {
+    width: 14% !important;
+    background: #1E1E2D;
+    position: fixed;
+}
+
+div#side-bar>div>div:last-child {
+    position: relative;
+    width: 95%;
+    background: #2A2A3C;
+    padding-left: 40px;
+}
+
+img[name="square"] {
+    position: absolute;
+    width: 10%;
+    height: auto;
+    left: 15px;
+    top: 10%;
+}

@@ -1,0 +1,25 @@
+
+
+/* WIDTH OF MAIN DIV CONTAINING THE TABLE */
+div#main-div {
+    width: 86%;
+}
+
+/* BACKGROUND COLOR OF CURRENT PAGE INDICATOR */
+div#main-div>nav[aria-label]>ul.pagination>li.disabled>p#pageId.page-link {
+    background: linear-gradient(135deg, rgb(255, 255, 255) 0%, rgb(200, 200, 200) 100%) !important;
+}
+
+/* FONT AWESOME ICONS FOR CRUD OPERATIONS */
+a>i[class] {
+    margin-right: 15px;
+}
+
+
+/* 'ADD USER' BUTTON */
+a.btn.btn-primary.position-absolute {
+    width: 12.5%;
+    left: 85.5%;
+    top: 5%;
+}
+
