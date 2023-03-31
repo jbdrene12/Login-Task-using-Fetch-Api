@@ -12,16 +12,20 @@
     <link rel="stylesheet" href="./styles/sidebar-style.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./script-table.js"></script>
-    <script src="./script-crud.js"></script>
+    <script src="./script-export.js"></script>
     <script src="./script-sort.js"></script>
+    <script src="./script-crud.js"></script>
 
 </head>
 
 <body>
     <div id="side-bar" class="float-start vh-100">
         <div class="mt-4 d-flex flex-column justify-content-center">
-            <div class="mx-auto"><hr style="height: 2px; width: 180px; opacity: .75;background: #2A2A3C;"></div>
-            <div class="mx-auto"><img src="./assets/square.png" name="square" alt="squares"><a href="./user-default.html" class="text-decoration-none text-light">User List</a></div>
+            <div class="mx-auto">
+                <hr style="height: 2px; width: 180px; opacity: .75;background: #2A2A3C;">
+            </div>
+            <div class="mx-auto"><img src="./assets/square.png" name="square" alt="squares"><a
+                    href="./user-default.html" class="text-decoration-none text-light">User List</a></div>
 
         </div>
     </div>
@@ -34,21 +38,26 @@
             </div>
             <div>
                 <br />
-                <a href="./user-list/add-user.html" class="btn btn-primary position-absolute">Add User</a> 
+                <a href="./user-list/add-user.html" class="btn btn-primary position-absolute">Add User</a>
                 <label for="search">Search <input type="search" class="w-75 mt-5" id="search" /></label>
             </div>
         </div>
         <br />
-    
+
         <table class="table table-striped">
             <thead class="table-dark">
                 <tr>
-                <th><span id="idColor" onclick="idFunc(1)">ID </span><span id="id-sort" onclick="tableOf(sortColumn(arrayOfUsers,'id'),1)">#</span></th>
-                <th><span id="nameColor" onclick="idFunc(0)">Name </span><span id="name-sort" onclick="tableOf(sortColumn(arrayOfUsers,'name'),1)">#</span></th>
+                    <th><span id="idColor" onclick="idFunc(1)">ID </span><span id="id-sort"
+                            onclick="tableOf(sortColumn(arrayOfUsers,'id'),1)"><i class="fa-solid fa-sort"></i></span>
+                    </th>
+                    <th><span id="nameColor" onclick="idFunc(0)">Name </span><span id="name-sort"
+                            onclick="tableOf(sortColumn(arrayOfUsers,'name'),1)"><i class="fa-solid fa-sort"></i></span>
+                    </th>
                     <th>Email</th>
                     <th>
                         <div class="dropdown">
-                            <a href="#" class="dropdown-toggle text-white text-decoration-none" id="genderDropdown" data-bs-toggle="dropdown">Gender</a>
+                            <a href="#" class="dropdown-toggle text-white text-decoration-none" id="genderDropdown"
+                                data-bs-toggle="dropdown">Gender</a>
                             <div class="dropdown-menu">
                                 <p class="dropdown-item" onclick='genderFunc("g")'>Gender</a>
                                 <p class="dropdown-item" onclick='genderFunc("m")'>Male</a>
@@ -62,8 +71,8 @@
             </thead>
             <tbody id="userList"><!-- TABLE BODY WILL BE CREATED WITH JAVASCRIPT --></tbody>
         </table>
-    
-        <nav aria-label="Page navigation">  <!-- PAGE NUMBER -->
+
+        <nav aria-label="Page navigation"> <!-- PAGE NUMBER -->
             <p class="d-inline float-start text-secondary">Viewing <span id="displayCount">10</span> of 10 entries</p>
             <ul class="pagination float-end">
                 <li class="page-item"><a class="page-link border-0 text-dark" href="#">Previous</a></li>
@@ -74,134 +83,121 @@
                 <li class="page-item"><a class="page-link border-0 text-dark" href="#">Next</a></li>
             </ul>
         </nav>
-        
+
     </div>
-	
+
     <script>
 
-                                        /* PAGINATION */
+        /* PAGINATION */
 
-		let pageVal = 1;    //  VARIABLE STORES PAGE
-
+        let pageVal = 1;    //  VARIABLE STORES PAGE
+        let urlCount = "10";
         const api_url = `https://gorest.co.in/public/v2/users?access-token=3803732897851d7e9809cc003e1b8cc80ad27dcaa86b741c07894ed034de8f21`;
+        
         const arrayOfUsers = [];
         let temp = [];
+        let accessActive = 0;       //  SET TRUE IF ACCESSED WITH ACCESS TOKEN
+  
+        // async function get(access, url) {   //  FETCH - GET
 
-        let user;
-        async function get(url) {   //  FETCH
+        //     const response = await fetch(url);
 
-            const response = await fetch(url);
+        //     user = await response.json();   // SAVE THE DATA IN VARIABLE
+        //     console.log(url);
 
-            user = await response.json();   // SAVE THE DATA IN VARIABLE
-            console.log(url);
-         
-            tableOf(user, 0);       //  CREATE A TABLE USING FETCHED DATA
-        }
+        //     tableOf(user, 0);       //  CREATE A TABLE USING FETCHED DATA
+        //     access === "access" ? accessActive=1 : accessActive=0;
+        // }
 
-        get(api_url);               //  CALL FUNCTION TO FETCH
+        get("access",api_url);               //  CALL FUNCTION TO FETCH
 
-		let anchorTag = document.getElementsByClassName("page-link"); //    LIST OF ALL PAGE NAVIGATORS
+        let anchorTag = document.getElementsByClassName("page-link"); //    LIST OF ALL PAGE NAVIGATORS
         console.log(anchorTag)
         for (let i = 0; i < anchorTag.length; i++) {
             anchorTag[i].onclick = function () {
                 if (this.textContent != "Next" && this.textContent != "Previous") {
                     console.log(this.textContent)
-                    
+
                     pageVal = this.textContent;         // pageVal VARIABLE BECOMES - THE PAGE NUMBER THAT IS CLICKED
-                    
-                    get(`https://gorest.co.in/public/v2/users?page=${pageVal - 1}&per_page=10`);    // CALL FETCH FUNCTION FOR THAT PAGE
+
+                    get("no-access",`https://gorest.co.in/public/v2/users?page=${pageVal}&per_page=${urlCount}`);    // CALL FETCH FUNCTION FOR THAT PAGE
                     document.getElementById("pageId").textContent = pageVal                         // SET pageVal AS CURRENT PAGE NUMBER
                 }
                 else if (this.textContent == "Next") {
                     ++pageVal;
-                    get(`https://gorest.co.in/public/v2/users?page=${pageVal - 1}&per_page=10`);    // NEXT BUTTON
+                    get("no-access",`https://gorest.co.in/public/v2/users?page=${pageVal}&per_page=${urlCount}`);    // NEXT BUTTON
                     document.getElementById("pageId").textContent = pageVal
                 }
                 else {
                     if (pageVal != 1 && pageVal != 2) {
                         --pageVal;                                                                     // PREVIOUS BUTTON
-                        get(`https://gorest.co.in/public/v2/users?page=${pageVal - 1}&per_page=10`);
+                        get("no-access",`https://gorest.co.in/public/v2/users?page=${pageVal}&per_page=${urlCount}`);
                         document.getElementById("pageId").textContent = pageVal;
                     }                                                                                  // '!= 1' PREVENTS PAGE NUMBER GOING TO '0' 
-                    else  if(pageVal != 1){
+                    else if (pageVal != 1) {
                         --pageVal;
-                        get(api_url);
+                        urlCount=="10" ? get("access",api_url) : get("no-access",`https://gorest.co.in/public/v2/users?page=1&per_page=${urlCount}`);
                         document.getElementById("pageId").textContent = pageVal;
                     }
                 }
                 document.getElementById("nextPageId").textContent = (parseInt(pageVal) + 1);    // CHANGE NEXT PAGE BUTTON TEXT
-                document.getElementById("count").value = "10";                                  // SET DEFAULT DISPLAY COUNT TO 10 ON EACH PAGE
+                //document.getElementById("count").value = "10";                                  // SET DEFAULT DISPLAY COUNT TO 10 ON EACH PAGE
             }
         }
 
-                                    /* SEARCH BAR */
+        /* SEARCH BAR */
 
         let idSearch = 0;                       // BY DEFAULT GET BY ID FALSE
-        let paragraph = "";
-        let tempArray = [];
-        let count = "";
-        let filterVal, filterOutput;
-        document.getElementById("search").addEventListener("keyup", function (e) {    
+        let paragraph = "";                     //  USED FOR SEARCH
+        let tempArray = [];                     //  USED FOR STORING SLICE OF USER ARRAY TO DISPLAY - DURING SHOW 'N' ENTRIES
+        let count = "";                         //  THE 'N' IN - SHOW 'N' ENTRIES
+        let filterVal;                          //  ARRAY CONTAINS DETAILS FILTERED BY SEARCH
+        document.getElementById("search").addEventListener("keyup", function (e) {
 
             if (document.getElementById("search").value == "") {        //  IF SEARCH BOX IS CLEARED --> SHOW FULL TABLE
                 paragraph = "";
                 tableOf(arrayOfUsers, 1);
             }
 
-            if (e.key === "Backspace" && paragraph.length > 0) {        //  BACKSPACE DELETES ONE CHARACTER
-                paragraph = paragraph.slice(0, -1);
-
-            } else if (/[a-zA-Z0-9]/.test(e.key) && e.key != "Backspace") { // IGNORE BACKSPACE AND SYMBOLS
-                paragraph += e.key;
+            else if (/[a-zA-Z0-9]/.test(e.key)) { // IGNORE BACKSPACE AND SYMBOLS
+                paragraph = document.getElementById("search").value;
                 console.log(paragraph)
             }
 
-            idSearch==1     //  IF SEARCH-BY-ID == TRUE --> FILTER-BY-ID -
-            ?               //                   - ELSE --> FILTER-BY-NAME    
-            filterVal = arrayOfUsers.filter((x) => paragraph == x[0].toString().slice(0, paragraph.length))
-            :
-            filterVal = arrayOfUsers.filter((x) => paragraph.toLowerCase() == x[1].toLowerCase().slice(0, paragraph.length));
+            idSearch == 1     //  IF SEARCH-BY-ID == TRUE --> FILTER-BY-ID -
+                ?               //                   - ELSE --> FILTER-BY-NAME    
+                filterVal = arrayOfUsers.filter((x) => paragraph == x[0].toString().slice(0, paragraph.length))
+                :
+                filterVal = arrayOfUsers.filter((x) => paragraph.toLowerCase() == x[1].toLowerCase().slice(0, paragraph.length));
 
-            if (filterVal.length && document.getElementById("search").value != "") { 
+            if (filterVal.length && document.getElementById("search").value != "") {
 
-                    /* DISPLAY FILTERED RESULS IN TABLE FORM */
+                /* DISPLAY FILTERED RESULS IN TABLE FORM */
+                tableOf(filterVal, 1)
 
-                filterOutput = "";
-                for (let value in filterVal) {
-
-                    filterOutput += `<tr>
-                <td>${filterVal[value][0]}</td>
-                <td>${filterVal[value][1]}</td>
-                <td>${filterVal[value][2]}</td>
-                <td>${filterVal[value][3]}</td>
-                <td>${filterVal[value][4]}</td>	
-                <td><a href="./user-list-crud/view-user.html" class="text-decoration-none" onclick='viewFunc(${value})'><i class="fa-solid fa-eye" style="color: #00f;"></i></a> <a href="./user-list-crud/update-user.html" class="text-decoration-none" onclick='viewFunc(${value})'><i class="fa-solid fa-pencil" style="color: #00f;"></i></a> <a class="text-decoration-none" href="./user-list-crud/delete-user.html" onclick='viewFunc(${value})'><i class="fa-solid fa-trash" style="color: #f00;"></i></a></td>	
-            </tr>`;
-                }
-                document.getElementById("userList").innerHTML = filterOutput; 
-                                    // <tbody id="userList"> ... GOES HERE ... </tbody>
-
-            } else if (
+            }
+            else if (
                 filterVal.length == 0 &&
                 document.getElementById("search").value !== "") {
                 emptyTable();           // DISPLAY AN EMPTY TABLE IF THERE ARE NO MATCHES
             }
         });
 
-                                    /* DISPLAY COUNT */
+        /* DISPLAY COUNT */
 
         document.getElementById("count").addEventListener("keyup", function (e) {
 
             if (typeof parseInt(e.key) == "number" && parseInt(e.key) >= 0) {
                 tempArray = []
-                count += e.key  
-
-                if (document.getElementById("count").value == count) {
-                    // IF VARIABLE-COUNT != COUNT IN TEXTBOX --> VARIABLE-COUNT = COUNT IN TEXTBOX
+                count = document.getElementById("count").value;
+                count != "" ? urlCount = count : urlCount = "10"
+                if (pageVal != 1 || accessActive != 1) {
+                    if (parseInt(urlCount) > 10) {      // LIMIT PAGE DATA
+                        urlCount = "10"
+                    }
+                    get("no-access",`https://gorest.co.in/public/v2/users?page=${pageVal}&per_page=${urlCount}`);
                 }
-                else {
-                    count = document.getElementById("count").value
-                }
+               
                 if (arrayOfUsers.length > parseInt(count)) {   //  IF COUNT IS LESS THAN USERS LIST, SLICE AND DISPLAY COUNT NO. OF USERS
                     tempArray.push(...arrayOfUsers.slice(0, parseInt(count)))
                 }
@@ -210,7 +206,7 @@
                     tempArray.push(...arrayOfUsers)     // ELSE DISPLAY ALL THE USERS
                 }
                 tableOf(tempArray, 1)                   // DISPLAY AS A TABLE
-                if(parseInt(count) > 10) {
+                if (parseInt(count) > 10) {
                     document.getElementById("displayCount").innerHTML = "10";
                     document.getElementById("count").value = "10";  // DON'T LET A VALUE HIGHER THAN THE SET LIMIT
                 }                                                   // ALSO DISPLAY IT BELOW
@@ -218,22 +214,19 @@
                     document.getElementById("displayCount").innerHTML = count;
                 }
             }
-            else if (e.key == "Backspace") {
-                document.getElementById("count").value = "";        // BACKSPACE DELETES DATA AND RESETS COUNT
-                count = "";
-                tempArray = [];
-            }
+
             else if (/^[a-zA-Z]$/.test(e.key)) {                    // ALERT IF USER ENERED A NON-NUMBER
                 alert("NaN");
+                document.getElementById("count").value = "10";
             }
         });
 
         function emptyTable() {
             document.getElementById("userList").innerHTML = "";
-                                                // <tbody id="userList"> ... GOES HERE ... </tbody>
+            // <tbody id="userList"> ... GOES HERE ... </tbody>
         }
 
-                        /* DISPLAY BY GENDER */
+        /* DISPLAY BY GENDER */
 
         function genderFunc(gender) {
             let sortByGender = [];
@@ -256,7 +249,6 @@
             }
             else {
                 sortByGender = [];
-                //document.getElementById("genderDropdown").textContent = "Gender";
                 sortByGender.push(...arrayOfUsers)
             }
             console.log(sortByGender);
@@ -265,14 +257,19 @@
         }
 
         function viewFunc(num) {    //  FUNCTION STORES DATA OF SPECIFIC USER TO PERFORM VIEW/UPDATE/DELETE LATER
-            console.log(arrayOfUsers[num])
             store(arrayOfUsers[num])
+        }
+        
+
+        function deleteFunc(num) {
+                toDelete(`https://gorest.co.in/public/v2/users/${arrayOfUsers[num][0]}?access-token=3803732897851d7e9809cc003e1b8cc80ad27dcaa86b741c07894ed034de8f21`)
+                                     // FETCH URL WITH ID
         }
 
         function idFunc(num) {      // FUNCTION ENABLES FINDING BY ID
             idSearch = num;
-            paragraph="";
-            if(num) {
+            paragraph = "";
+            if (num) {
                 document.getElementById("idColor").style.color = "#00f894";
                 document.getElementById("nameColor").style.color = "white";
             }

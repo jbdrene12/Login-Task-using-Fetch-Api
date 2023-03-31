@@ -76,8 +76,11 @@
             </div>
         </div>
         <script>
+
+            // SUBMIT BUTTON TRIGGERS VALIDATION --> FETCH DATA AND COMPARES IT WITH THE EMAIL AND PASSWORD ENTERED.
+            // PASSWORD IS THE ID.
          
-                document.getElementById("submitButton").addEventListener("click", eventLister)
+                document.getElementById("submitButton").addEventListener("click", eventLister);
             
 
             let user;
@@ -93,7 +96,7 @@
             }
 
 
-            function eventLister(event) {
+            function eventLister(event) {   
                     if (get("https://gorest.co.in/public/v2/users?access-token=3803732897851d7e9809cc003e1b8cc80ad27dcaa86b741c07894ed034de8f21") === true) {
                         
                         return true;
@@ -112,24 +115,23 @@
                     console.log(userEmail)
                     if (userEmail[0]["id"] == document.getElementById("password").value) {
                         
-                        document.getElementById("submitButton").removeEventListener("click", eventLister)
-                        document.getElementById("submitButton").value = "Continue"
-                        //document.querySelector("#submitButton").disabled = false;
+                        document.getElementById("submitButton").removeEventListener("click", eventLister);
+                        document.getElementById("submitButton").value = "Continue"; // SUBMIT BUTTON WORKS AFTER SUCCESSFUL VALIDATION
                         return true;
                     }
                     else {
-                        alert(`Password Error: ${userEmail[0]["id"]}`);
-                        //document.querySelector("#submitButton").disabled = true;
+                        alert(`Password Error: ${userEmail[0]["id"]}`);     // WRONG PASSWORD
+                        
                         return false;
                     }
                 }
-                else if(document.getElementById("email-id").value == "") {
+                else if(document.getElementById("email-id").value == "") {     //  EMAIL FIELD EMPTY
                     alert("Email field is empty");
                     return false;
                 }
                 else {
-                    alert("Email address not registered! Press Sign up to Register");
-                    return false;
+                    alert("Email address not registered! Press Sign up to Register (View console for valid email/password(id))");
+                    return false;               //  VALID EMAIL AND ID CAN BE FOUND IN CONSOLE IF YOU PRESS 'Sign In'
                 }
 
 
