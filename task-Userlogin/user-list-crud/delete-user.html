@@ -1,34 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!-- THIS PAGE IS FOR DELETING USER -->
+<!-- INPUT FIELD HAS THE DATA BUT CANT BE EDITED -->
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./styles/style.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../script-crud.js"></script>
 </head>
 
 <body>
-    <style>
-        label>input.form-control {
-            width: 550px;
-        }
-    </style>
     <div class="mx-4">
         <br>
         <h1 class="d-inline h5"><b id="title">View</b></h1>
         <a href="../user-default.html" class="float-end btn btn-primary" style="width: 150px;">Back</a>
+        <!-- WHEN BACK IS PRESSED, RETURN TO PREVIOUS PAGE -->
     </div>
     <div class="mt-4 d-flex justify-content-center align-items-center">
-        <form action="../user-default.html" class="mx-4 flex-fill border border-secondary" onsubmit="Delete(api_url)">
+        <form class="mx-4 flex-fill border border-secondary">
+            <!-- WHEN DELETE IS PRESSED, EXECUTE Delete() FUNCTION AND RETURN TO PREVIOUS PAGE -->
             <fieldset class="my-3">
                 <label class="form-label mx-4" for="f-name">First Name <input type="text" class="form-control"
-                        id="f-name" placeholder="First Name" onkeyup="myKeyPress(event,0)" disabled></label>
+                        id="f-name" placeholder="First Name" disabled></label>
                 <label class="form-label" for="l-name">Last Name <input type="text" class="form-control" id="l-name"
-                        placeholder="Last Name" onkeyup="myKeyPress(event,1)" disabled></label>
+                        placeholder="Last Name" disabled></label>
             </fieldset>
             <fieldset class="mt-3">
                 <label class="form-label mx-4" for="full-name">Full Name <input type="text" class="form-control"
@@ -44,15 +45,16 @@
                 <label class="form-label" for="status">Status <input type="text" class="form-control" id="status"
                         placeholder="Status" disabled></label>
             </fieldset>
-            <input type="submit" value="Delete Parameter" class="btn btn-primary float-end px-5 mx-4 mb-4">
+            <div id="delete-user"><input type="button" value="Delete Parameter"
+                    class="btn btn-primary float-end px-5 mx-4 mb-4" onclick="Delete(api_url)"></div>
         </form>
     </div>
     <script>
-        const retrievedData = retrieve();
+        const retrievedData = retrieve();   // RETRIEVE DATA STORED BY THE viewFunc() TRIGGERED BY PRESSING DELETE
         console.log(retrievedData);
-        let name = retrievedData[1].split(" ")
-        document.getElementById("title").innerHTML = `Delete - ID:${retrievedData[0]}`;
-        document.getElementById("f-name").value = name[0];
+        let name = retrievedData[1].split(" ")  // NAME IN THE ARRAY IS SPLIT TO DISPLAY AS FIRST-NAME AND LAST-NAME
+        document.getElementById("title").innerHTML = `Delete - ID:${retrievedData[0]}`; //  ID IS DISPLAYED IN HEADER
+        document.getElementById("f-name").value = name[0];          //  OTHER DATA ARE DISPLAYED IN RESPECTIVE FIELDS
         document.getElementById("l-name").value = name[1];
         document.getElementById("full-name").value = retrievedData[1];
         document.getElementById("gender").value = retrievedData[3];
@@ -60,16 +62,25 @@
         document.getElementById("status").value = retrievedData[4];
 
         api_url = `https://gorest.co.in/public/v2/users/${retrievedData[0]}?access-token=3803732897851d7e9809cc003e1b8cc80ad27dcaa86b741c07894ed034de8f21`
-
+        // FETCH URL WITH ID
         async function Delete(url) {
-            fetch(url, {
-                method: "DELETE",
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8",
-                    "Authorization": "Bearer"
+            if (confirm("Are you sure?")) {
+                fetch(url, {            //  FETCH - DELETE REQUEST
+                    method: "DELETE",
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8",
+                        "Authorization": "Bearer"
+                    }
+                })
+                alert("Delete Success")       // DISPLAY SUCCESS
+                document.getElementById("delete-user").innerHTML = '<input type="button" value="Deleted" class="btn btn-danger float-end px-5 mx-4 mb-4" disabled />'
+                //  DISABLES DELETE BUTTON IF ALREADY PRESSED ONCE
+                const colorChange = document.querySelectorAll("[type = 'text'],[type = 'email']");
+                for (i in colorChange) {
+                    colorChange[i].value = "[DELETED]";
                 }
-            })
-            alert("Delete Success")
+                document.getElementById("title").innerHTML = '[DELETED]';
+            }
         }
 
     </script>

@@ -13,6 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./script-table.js"></script>
     <script src="./script-crud.js"></script>
+    <script src="./script-sort.js"></script>
 
 </head>
 
@@ -42,8 +43,8 @@
         <table class="table table-striped">
             <thead class="table-dark">
                 <tr>
-                <th id="idColor" onclick="idFunc(1)">ID</th>
-                <th id="nameColor" onclick="idFunc(0)">Name</th>
+                <th><span id="idColor" onclick="idFunc(1)">ID </span><span id="id-sort" onclick="tableOf(sortColumn(arrayOfUsers,'id'),1)">#</span></th>
+                <th><span id="nameColor" onclick="idFunc(0)">Name </span><span id="name-sort" onclick="tableOf(sortColumn(arrayOfUsers,'name'),1)">#</span></th>
                     <th>Email</th>
                     <th>
                         <div class="dropdown">
@@ -59,7 +60,7 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody id="userList"><!-- TABLE WILL BE CREATED WITH JAVASCRIPT --></tbody>
+            <tbody id="userList"><!-- TABLE BODY WILL BE CREATED WITH JAVASCRIPT --></tbody>
         </table>
     
         <nav aria-label="Page navigation">  <!-- PAGE NUMBER -->
@@ -73,6 +74,7 @@
                 <li class="page-item"><a class="page-link border-0 text-dark" href="#">Next</a></li>
             </ul>
         </nav>
+        
     </div>
 	
     <script>

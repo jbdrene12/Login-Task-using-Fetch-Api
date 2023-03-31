@@ -31,7 +31,7 @@
             <a href="../user-default.html" class="float-end btn btn-primary" style="width: 150px;">Back</a>
         </div>
         <div class="mt-4 d-flex justify-content-center align-items-center">
-            <form action="../user-default.html" class="mx-4 flex-fill border border-secondary" onsubmit="post(api_url)">
+            <form  class="mx-4 flex-fill border border-secondary">
                 <fieldset class="my-3">
                     <label class="form-label mx-4" for="f-name">First Name <input type="text" class="form-control"
                             id="f-name" placeholder="First Name" onkeyup="myKeyPress(event,0)" required></label>
@@ -42,7 +42,7 @@
                     <label class="form-label mx-4" for="full-name">Full Name <input type="text" class="form-control"
                             id="full-name" disabled placeholder="Full Name"></label>
                     <label class="form-label" for="gender">Gender <input type="text" class="form-control" id="gender"
-                            placeholder="male/female" pattern="^(male)|(female)$" maxlength="6" required></label>
+                            placeholder="male/female" maxlength="6" required></label>
                     <p class="text-secondary small mt-0 mx-4">A block of help text that breaks onto a new line and
                         beyond one line.</p>
                 </fieldset>
@@ -50,9 +50,9 @@
                     `<label class="form-label mx-4" for="email">Email <input type="email" class="form-control"
                             placeholder="Email" id="email" required></label>
                     <label class="form-label" for="status">Status <input type="text" class="form-control" id="status"
-                            placeholder="Status" pattern="^(active)|(inactive)$" required></label>
+                            placeholder="Status" required></label>
                 </fieldset>
-                <input type="submit" value="Add Parameter" class="btn btn-primary float-end px-5 mx-4 mb-4">
+                <div id="add-user"><input type="button" value="Add Parameter" onclick="post(api_url)" class="btn btn-primary float-end px-5 mx-4 mb-4"></div>
             </form>
         </div>
     </div>
@@ -63,6 +63,7 @@
 
         let user;
         async function post(url) {          //  FETCH - POST
+            if (/^(male)$|^(female)$/.test(document.getElementById("gender").value) && /^(active)$|^(inactive)$/.test(document.getElementById("status").value)) {
             fetch(url, {
                 method: "POST",
                 body: JSON.stringify({
@@ -75,13 +76,19 @@
                     "Content-type": "application/json; charset=UTF-8",
                     "Authorization": "Bearer"
                 }
-            })
-                
-                .then(response => response.json())          
-                .then(json => console.log(json));           //  DISPLAY ADDED VALUE AS OBJECT
+            }).then(response => response.json(), message => alert(message)
+            ).then(json => console.log(json));           //  DISPLAY ADDED VALUE AS OBJECT
          
             alert("Success")                                //  POPUP MESSAGE - SUCCESS
+            document.getElementById("add-user").innerHTML = '<input type="button" value="Added" class="btn btn-primary float-end px-5 mx-4 mb-4 disabled">'
         }
+        else if(/^(male)$|^(female)$/.test(document.getElementById("gender").value)) {
+            alert("Check status field")
+        }
+        else {
+            alert("Check gender field")
+        }
+    }
         let firstName = "",
             lastName = "";
         const arrayOfId = ["f-name", "l-name"];             //   SAVING FIRST AND LAST NAME IN AN -

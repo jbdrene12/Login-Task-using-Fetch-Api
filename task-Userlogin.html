@@ -16,12 +16,13 @@
 
 <body>
     <style>
-        form>input.form-control {
-            width: 350px !important;
+        div>div>form>input.form-control {
+            width: 350px !important;    /* SET INPUT FIELD WIDTH */
         }
     </style>
     <div class="container-fluid px-0">
-        <div class="row gx-0">
+        <div class="row gx-0">              
+                                <!-- WHITE COLUMN WITH LOGIN -->
             <div class="col vh-100">
                 <div class="d-flex align-items-center justify-content-center h-100">
                     <form action="./task-Userlogin/user-default.html">
@@ -53,13 +54,13 @@
                                     href="#">Plans </a><a class="text-decoration-none" href="#">Contact Us</a></div>
 
                         </div>
-
-
                     </form>
 
                 </div>
 
             </div>
+
+                                    <!-- BLUE COLUMN -->
 
             <div class="col vh-100 bg-primary">
 
@@ -75,8 +76,7 @@
             </div>
         </div>
         <script>
-            let count = 0;
-            if (count === 0) {
+         
                 document.getElementById("submitButton").addEventListener("click", eventLister)
             
 
@@ -123,17 +123,18 @@
                         return false;
                     }
                 }
+                else if(document.getElementById("email-id").value == "") {
+                    alert("Email field is empty");
+                    return false;
+                }
                 else {
-                    alert("Email address not registered! Press Sign up to Register")
-                    return false
+                    alert("Email address not registered! Press Sign up to Register");
+                    return false;
                 }
 
 
             }
-        }
-        else {
-            console.log(count)
-        }
+       
 
         </script>
 </body>

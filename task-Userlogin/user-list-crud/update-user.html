@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!-- THIS PAGE IS FOR UPDATING USER -->
+<!-- INPUT FIELD HAS THE DATA AND CAN BE EDITED -->
+
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./styles/style.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../script-crud.js"></script>
 </head>
 
 <body>
-    <style>
-        label>input.form-control {
-            width: 550px;
-        }
-    </style>
     <div class="mx-4">
         <br>
         <h1 class="d-inline h5"><b id="title">Add User</b></h1>
         <a href="../user-default.html" class="float-end btn btn-primary" style="width: 150px;">Back</a>
+        <!-- WHEN BACK IS PRESSED, RETURN TO PREVIOUS PAGE -->
     </div>
     <div class="mt-4 d-flex justify-content-center align-items-center">
-        <form action="../user-default.html" class="mx-4 flex-fill border border-secondary" onsubmit="put(api_url)">
+        <form class="mx-4 flex-fill border border-secondary">
             <fieldset class="my-3">
                 <label class="form-label mx-4" for="f-name">First Name <input type="text" class="form-control"
                         id="f-name" placeholder="First Name" onkeyup="myKeyPress(event,0)" required></label>
@@ -34,7 +35,7 @@
                 <label class="form-label mx-4" for="full-name">Full Name <input type="text" class="form-control"
                         id="full-name" disabled placeholder="Full Name"></label>
                 <label class="form-label" for="gender">Gender <input type="text" class="form-control" id="gender"
-                        placeholder="Phone Number" maxlength="6" pattern="^(male)|(female)$" required></label>
+                        placeholder="Phone Number" maxlength="6" required></label>
                 <p class="text-secondary w-50 small mt-0 mx-4">A block of help text that breaks onto a new line and
                     beyond one line.</p>
             </fieldset>
@@ -42,79 +43,94 @@
                 `<label class="form-label mx-4" for="email">Email <input type="email" class="form-control"
                         placeholder="Email" id="email" required></label>
                 <label class="form-label" for="status">Status <input type="text" class="form-control" id="status"
-                        placeholder="Status" pattern="^(active)|(inactive)$" required></label>
+                        placeholder="Status" required></label>
             </fieldset>
-            <input type="submit" value="Update Parameter" class="btn btn-primary float-end px-5 mx-4 mb-4">
+            <div id="update-user"><input type="button" value="Update Parameter"
+                    class="btn btn-primary float-end px-5 mx-4 mb-4" onclick="put(api_url)"></div>
         </form>
     </div>
     <script>
 
-        
-    const retrievedData = retrieve();
+
+        const retrievedData = retrieve();   // RETRIEVE DATA STORED BY THE viewFunc() TRIGGERED BY PRESSING DELETE
         console.log(retrievedData);
-        let name = retrievedData[1].split(" ")
-        document.getElementById("title").innerHTML = `Update - ID:${retrievedData[0]}`;
-        document.getElementById("f-name").value = name[0];
+        let name = retrievedData[1].split(" ")  // NAME IN THE ARRAY IS SPLIT TO DISPLAY AS FIRST-NAME AND LAST-NAME
+        document.getElementById("title").innerHTML = `Update - ID:${retrievedData[0]}`; //  ID IS DISPLAYED IN HEADER
+        document.getElementById("f-name").value = name[0];          //  OTHER DATA ARE DISPLAYED IN RESPECTIVE FIELDS
         document.getElementById("l-name").value = name[1];
         document.getElementById("full-name").value = retrievedData[1];
         document.getElementById("gender").value = retrievedData[3];
         document.getElementById("email").value = retrievedData[2];
         document.getElementById("status").value = retrievedData[4];
-        
+
 
 
         api_url = `https://gorest.co.in/public/v2/users/${retrievedData[0]}?access-token=3803732897851d7e9809cc003e1b8cc80ad27dcaa86b741c07894ed034de8f21`
-
+        // FETCH URL WITH ID
         let user;
-        async function put(url) {
-            fetch(url, {
-                method: "PUT",
-                body: JSON.stringify({
-                    name: document.getElementById("full-name").value,
-                    email: document.getElementById("email").value,
-                    gender: document.getElementById("gender").value.toLowerCase(),
-                    status: document.getElementById("status").value
-                }),
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8",
-                    "Authorization": "Bearer"
+        async function put(url) {    //  FETCH - PUT REQUEST
+            if (/^(male)$|^(female)$/.test(document.getElementById("gender").value) && /^(active)$|^(inactive)$/.test(document.getElementById("status").value)) {
+                if (confirm("Do you want to write the changes?")) {
+                    fetch(url, {
+                        method: "PUT",
+                        body: JSON.stringify({
+                            name: document.getElementById("full-name").value,
+                            email: document.getElementById("email").value,
+                            gender: document.getElementById("gender").value.toLowerCase(),
+                            status: document.getElementById("status").value
+                        }),
+                        headers: {
+                            "Content-type": "application/json; charset=UTF-8",
+                            "Authorization": "Bearer"
+                        }
+                    })
+
+                        .then(response => response.json())
+                        .then(json => console.log(json));      // DISPLAY OBJECT WITH NEW VALUES
+                    alert("Success")        // DISPLAY SUCCESS
+                    document.getElementById("update-user").innerHTML = '<input type="button" value="Updated Succesfully" class="btn btn-success float-end px-5 mx-4 mb-4" disabled >'
                 }
-            })
-            
-            .then(response => response.json())
-            .then(json => console.log(json));
-            alert("Success")
+            }
+            else if (/^(male)$|^(female)$/.test(document.getElementById("gender").value)) {
+                alert("Check status field")
+            }
+            else if(/^(active)$|^(inactive)$/.test(document.getElementById("status").value)) {
+                alert("Check gender field")
+            }
         }
-        let firstName = "",
-            lastName = "";
-        const arrayOfId = ["f-name", "l-name"];
-        function myKeyPress(e, val) {
+        let firstName = name[0],
+            lastName = name[1];
+        const arrayOfId = ["f-name", "l-name"];         //   SAVING FIRST AND LAST NAME IN AN -
+        // - ARRAY TO DISPLAY THEM DYNAMICALLY AS FULL NAME 
+
+        function myKeyPress(e, val) {                       //  SAVING KEY PRESS
             if (/^[a-zA-Z0-9]$/.test(e.key)) {
                 if (val == 0) {
-                    firstName += e.key;
+                    firstName += e.key;                     //  SAVE VALUE ONLY IF IT'S SINGLE CHARACTER - TO AVOID SPECIAL KEYS
                 }
                 else {
                     lastName += e.key;
                 }
                 document.getElementById("full-name").value = `${firstName} ${lastName}`;
+                //  DISPLAY DYNAMICALLY IN FULL NAME TEXTBOX
 
             }
             else if (e.key == "Backspace" || e.key == "Delete") {
-                // firstName = "";
-                // lastName = "";
-                val == 0 ? firstName = "" : lastName = "";
+
+                val == 0 ? firstName = "" : lastName = "";  //  CLEAR FIELD IF DELETE OR BACKSPACE PRESSED
 
                 document.getElementById(arrayOfId[val]).value = "";
                 document.getElementById("full-name").value = `${firstName} ${lastName}`;
             }
             if (firstName != document.getElementById(arrayOfId[val]).value || lastName != document.getElementById(arrayOfId[val]).value) {
                 val == 0 ? firstName = document.getElementById(arrayOfId[val]).value : lastName = document.getElementById(arrayOfId[val]).value;
-                document.getElementById("full-name").value = `${firstName} ${lastName}`;
+                document.getElementById("full-name").value = `${firstName} ${lastName}`; //   REMOVE WRONG ENTRIES IF USER -
+                // - REPLACES TEXT INSTEAD OF DELETING
             }
             return `${firstName} ${lastName}`;
         }
-   
-   </script>
+
+    </script>
 </body>
 
 </html>
