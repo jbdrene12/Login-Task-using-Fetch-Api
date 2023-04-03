@@ -75,12 +75,12 @@
         <nav aria-label="Page navigation"> <!-- PAGE NUMBER -->
             <p class="d-inline float-start text-secondary">Viewing <span id="displayCount">10</span> of 10 entries</p>
             <ul class="pagination float-end">
-                <li class="page-item"><a class="page-link border-0 text-dark" href="#">Previous</a></li>
+                <li class="page-item"><a class="page-link border-0 text-dark">Previous</a></li>
                 <li class="page-item disabled">
                     <p class="page-link text-dark" id="pageId">1</p>
                 </li>
-                <li class="page-item"><a class="page-link border-0 text-dark" id="nextPageId" href="#">2</a></li>
-                <li class="page-item"><a class="page-link border-0 text-dark" href="#">Next</a></li>
+                <li class="page-item"><a class="page-link border-0 text-dark" id="nextPageId">2</a></li>
+                <li class="page-item"><a class="page-link border-0 text-dark">Next</a></li>
             </ul>
         </nav>
 
@@ -156,7 +156,7 @@
 
             if (document.getElementById("search").value == "") {        //  IF SEARCH BOX IS CLEARED --> SHOW FULL TABLE
                 paragraph = "";
-                tableOf(arrayOfUsers, 1);
+                tableByCount(count);
             }
 
             else if (/[a-zA-Z0-9]/.test(e.key)) { // IGNORE BACKSPACE AND SYMBOLS
@@ -187,8 +187,7 @@
 
         document.getElementById("count").addEventListener("keyup", function (e) {
 
-            if (typeof parseInt(e.key) == "number" && parseInt(e.key) >= 0) {
-                tempArray = []
+            if (/^[0-9]$/.test(e.key) && parseInt(e.key) >= 0) {        // ONLY ACCEPT NUMBERS
                 count = document.getElementById("count").value;
                 count != "" ? urlCount = count : urlCount = "10"
                 if (pageVal != 1 || accessActive != 1) {
@@ -198,14 +197,8 @@
                     get("no-access",`https://gorest.co.in/public/v2/users?page=${pageVal}&per_page=${urlCount}`);
                 }
                
-                if (arrayOfUsers.length > parseInt(count)) {   //  IF COUNT IS LESS THAN USERS LIST, SLICE AND DISPLAY COUNT NO. OF USERS
-                    tempArray.push(...arrayOfUsers.slice(0, parseInt(count)))
-                }
-                else {
-                    //alert("bxab")
-                    tempArray.push(...arrayOfUsers)     // ELSE DISPLAY ALL THE USERS
-                }
-                tableOf(tempArray, 1)                   // DISPLAY AS A TABLE
+                tableByCount(count)
+                
                 if (parseInt(count) > 10) {
                     document.getElementById("displayCount").innerHTML = "10";
                     document.getElementById("count").value = "10";  // DON'T LET A VALUE HIGHER THAN THE SET LIMIT
@@ -215,15 +208,30 @@
                 }
             }
 
-            else if (/^[a-zA-Z]$/.test(e.key)) {                    // ALERT IF USER ENERED A NON-NUMBER
+            else if (/^[a-zA-Z\+\*\#\$]$/.test(e.key)) {                    // ALERT IF USER ENERED A NON-NUMBER
                 alert("NaN");
-                document.getElementById("count").value = "10";
+                count != "" ? document.getElementById("count").value = count : document.getElementById("count").value ="10";
             }
         });
 
         function emptyTable() {
             document.getElementById("userList").innerHTML = "";
             // <tbody id="userList"> ... GOES HERE ... </tbody>
+        }
+
+        function tableByCount(limit) {
+            tempArray = [];
+            if (arrayOfUsers.length > parseInt(limit)) {   //  IF COUNT IS LESS THAN USERS LIST, SLICE AND DISPLAY COUNT NO. OF USERS
+                    tempArray.push(...arrayOfUsers.slice(0, parseInt(limit)))
+                    console.log(arrayOfUsers.length)
+                    console.log(parseInt(limit))
+                    console.log(tempArray.length)
+                }
+                else {
+                    tempArray.push(...arrayOfUsers)     // ELSE DISPLAY ALL THE USERS
+                }
+                
+                tableOf(tempArray, 1)                   // DISPLAY AS A TABLE
         }
 
         /* DISPLAY BY GENDER */
