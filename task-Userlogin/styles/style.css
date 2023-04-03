@@ -15,11 +15,18 @@ a>i[class] {
     margin-right: 15px;
 }
 
-
 /* 'ADD USER' BUTTON */
 a.btn.btn-primary.position-absolute {
     width: 12.5%;
     left: 85.5%;
     top: 5%;
+}
+
+/*   hr ABOVE DIV - USER LIST IN SIDEBAR   */
+div>hr {
+    height: 2px;
+    width: 180px;
+    opacity: .75;
+    background: #2A2A3C;
 }
 
