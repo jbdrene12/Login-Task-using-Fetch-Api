@@ -210,7 +210,8 @@
 
             else if (/^[a-zA-Z\+\*\#\\\-\_\$]$/.test(e.key)) {                    // ALERT IF USER ENERED A NON-NUMBER
                 alert("NaN");
-                count != "" ? document.getElementById("count").value = count : document.getElementById("count").value ="10";
+                document.getElementById("count").value = (count != "") ? count : "10";
+                count = "";
             }
         });
 

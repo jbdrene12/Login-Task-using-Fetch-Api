@@ -18,7 +18,7 @@ async function get(access, url) {   //  FETCH - GET
 async function put(url) {    //  FETCH - PUT REQUEST
     if (/^(male)$|^(female)$/.test(document.getElementById("gender").value.toLowerCase())
     && /^(active)$|^(inactive)$/.test(document.getElementById("status").value.toLowerCase())
-    && /^[a-z][a-z0-9\_\-]+\@[a-z][a-z0-9]+\.[a-z0-9]+$/.test(document.getElementById("email").value) 
+    && /^[a-z][a-z0-9\_\-]+\@[a-z][a-z0-9\_\-]+\.[a-z0-9]+$/.test(document.getElementById("email").value) 
     && document.getElementById("full-name").value.length > 0) {
         if (confirm("Do you want to write the changes?")) {
             fetch(url, {
@@ -46,7 +46,7 @@ async function put(url) {    //  FETCH - PUT REQUEST
         alert("Check Name field");
     }
     else if (/^(male)$|^(female)$/.test(document.getElementById("gender").value)
-        && /^[a-z][a-z0-9\_\-]+\@[a-z][a-z0-9]+\.[a-z0-9]+$/g.test(document.getElementById("gender").value)) {
+        && /^[a-z][a-z0-9\_\-]+\@[a-z][a-z0-9\_\-]+\.[a-z0-9]+$/g.test(document.getElementById("gender").value)) {
         alert("Check status field");
     }
     else if ((/^(male)$|^(female)$/.test(document.getElementById("gender").value))
@@ -81,7 +81,7 @@ async function toDelete(url) {
 async function post(url) {          //  FETCH - POST
     if (/^(male)$|^(female)$/.test(document.getElementById("gender").value.toLowerCase())
         && /^(active)$|^(inactive)$/.test(document.getElementById("status").value.toLowerCase())
-        && /^[a-z][a-z0-9\_\-]+\@[a-z][a-z0-9]+\.[a-z0-9]+$/.test(document.getElementById("email").value) 
+        && /^[a-z][a-z0-9\_\-]+\@[a-z][a-z0-9\_\-]+\.[a-z0-9]+$/.test(document.getElementById("email").value) 
         && document.getElementById("full-name").value.length > 0) {
         fetch(url, {
             method: "POST",
@@ -106,7 +106,7 @@ async function post(url) {          //  FETCH - POST
         alert("Check Name field");
     }
     else if (/^(male)$|^(female)$/.test(document.getElementById("gender").value)
-        && /^[a-z][a-z0-9\_\-]+\@[a-z][a-z0-9]+\.[a-z0-9]+$/g.test(document.getElementById("gender").value)) {
+        && /^[a-z][a-z0-9\_\-]+\@[a-z][a-z0-9\_\-]+\.[a-z0-9]+$/g.test(document.getElementById("gender").value)) {
         alert("Check status field");
     }
     else if ((/^(male)$|^(female)$/.test(document.getElementById("gender").value))
