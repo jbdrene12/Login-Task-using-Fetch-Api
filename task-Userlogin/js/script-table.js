@@ -14,8 +14,8 @@ function tableOf(array, val) {          // FUNCTION TAKES AN ARRAY(array) AND VA
                 <td>${data.gender}</td>
                 <td>${data.status}</td>
                 <td>
-                    <a href="./user-list-crud/view-user.html" class="text-decoration-none" onclick='viewFunc(${array.indexOf(data)})'><i class="fa-solid fa-eye" style="color: #0000ff;"></i></a> 
-                    <a href="./user-list-crud/update-user.html" class="text-decoration-none" onclick='viewFunc(${array.indexOf(data)})'><i class="fa-solid fa-pencil" style="color: #00f;"></i></a> 
+                    <a href="./view-edit-user/view-user.html" class="text-decoration-none" onclick='viewFunc(${array.indexOf(data)})'><i class="fa-solid fa-eye" style="color: #0000ff;"></i></a> 
+                    <a href="./view-edit-user/update-user.html" class="text-decoration-none" onclick='viewFunc(${array.indexOf(data)})'><i class="fa-solid fa-pencil" style="color: #00f;"></i></a> 
                     <a class="text-decoration-none" onclick='deleteFunc(${array.indexOf(data)})'><i class="fa-solid fa-trash" style="color: #f00;"></i></a>
                 </td>		
             </tr>`;
@@ -34,9 +34,9 @@ function tableOf(array, val) {          // FUNCTION TAKES AN ARRAY(array) AND VA
                 <td>${array[data][3]}</td>
                 <td>${array[data][4]}</td>
                 <td>
-                    <a href="./user-list-crud/view-user.html" class="text-decoration-none" onclick='viewFunc(${data})'><i class="fa-solid fa-eye" style="color: #00f;"></i></a> 
-                    <a href="./user-list-crud/update-user.html" class="text-decoration-none" onclick='viewFunc(${data})'><i class="fa-solid fa-pencil" style="color: #00f;"></i></a> 
-                    <a href="./user-list-crud/delete-user.html" class="text-decoration-none" onclick='deleteFunc(${data})'><i class="fa-solid fa-trash" style="color: #f00;"></i></a>
+                    <a href="./view-edit-user/view-user.html" class="text-decoration-none" onclick='viewFunc(${data})'><i class="fa-solid fa-eye" style="color: #00f;"></i></a> 
+                    <a href="./view-edit-user/update-user.html" class="text-decoration-none" onclick='viewFunc(${data})'><i class="fa-solid fa-pencil" style="color: #00f;"></i></a> 
+                    <a class="text-decoration-none" onclick='deleteFunc(${data})'><i class="fa-solid fa-trash" style="color: #f00;"></i></a>
                 </td>		
             </tr>`;
 
