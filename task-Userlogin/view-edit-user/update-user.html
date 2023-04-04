@@ -28,9 +28,9 @@
         <form class="mx-4 flex-fill border border-secondary">
             <fieldset class="my-3">
                 <label class="form-label mx-4" for="f-name">First Name <input type="text" class="form-control"
-                        id="f-name" placeholder="First Name" onkeyup="myKeyPress(event,0)" required></label>
+                        id="f-name" placeholder="First Name" onkeyup="myKeyPress()" required></label>
                 <label class="form-label" for="l-name">Last Name <input type="text" class="form-control" id="l-name"
-                        placeholder="Last Name" onkeyup="myKeyPress(event,1)" required></label>
+                        placeholder="Last Name" onkeyup="myKeyPress()" required></label>
             </fieldset>
             <fieldset class="mt-3">
                 <label class="form-label mx-4" for="full-name">Full Name <input type="text" class="form-control"
@@ -67,38 +67,14 @@
 
 
         api_url = `https://gorest.co.in/public/v2/users/${retrievedData[0]}?access-token=3803732897851d7e9809cc003e1b8cc80ad27dcaa86b741c07894ed034de8f21`
-
-        let firstName = name[0],
-            lastName = name[1];
-        const arrayOfId = ["f-name", "l-name"];         //   SAVING FIRST AND LAST NAME IN AN -
-                                                        // - ARRAY TO DISPLAY THEM DYNAMICALLY AS FULL NAME 
-        function myKeyPress(e, val) {                       //  SAVING KEY PRESS
-            if (/^[a-zA-Z0-9]$/.test(e.key)) {
-                if (val == 0) {
-                    firstName += e.key;                     //  SAVE VALUE ONLY IF IT'S SINGLE CHARACTER - TO AVOID SPECIAL KEYS
-                }
-                else {
-                    lastName += e.key;
-                }
-                document.getElementById("full-name").value = `${firstName} ${lastName}`;
+ 
+        function myKeyPress() {                     
+            
+                document.getElementById("full-name").value = `${document.getElementById("f-name").value} ${document.getElementById("l-name").value}`;
                 //  DISPLAY DYNAMICALLY IN FULL NAME TEXTBOX
 
             }
-            else if (e.key == "Backspace" || e.key == "Delete") {
-
-                val == 0 ? firstName = "" : lastName = "";  //  CLEAR FIELD IF DELETE OR BACKSPACE PRESSED
-
-                document.getElementById(arrayOfId[val]).value = "";
-                document.getElementById("full-name").value = `${firstName} ${lastName}`;
-            }
-            if (firstName != document.getElementById(arrayOfId[val]).value || lastName != document.getElementById(arrayOfId[val]).value) {
-                val == 0 ? firstName = document.getElementById(arrayOfId[val]).value : lastName = document.getElementById(arrayOfId[val]).value;
-                document.getElementById("full-name").value = `${firstName} ${lastName}`; //   REMOVE WRONG ENTRIES IF USER -
-                                                                                         // - REPLACES TEXT INSTEAD OF DELETING
-            }
-            return `${firstName} ${lastName}`;
-        }
-
+            
     </script>
 </body>
 
