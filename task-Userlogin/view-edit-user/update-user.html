@@ -57,8 +57,8 @@
         console.log(retrievedData);
         let name = retrievedData[1].split(" ")  // NAME IN THE ARRAY IS SPLIT TO DISPLAY AS FIRST-NAME AND LAST-NAME
         document.getElementById("title").innerHTML = `Update - ID:${retrievedData[0]}`; //  ID IS DISPLAYED IN HEADER
-        document.getElementById("f-name").value = name[0];          //  OTHER DATA ARE DISPLAYED IN RESPECTIVE FIELDS
-        document.getElementById("l-name").value = name[1];
+        document.getElementById("l-name").value = name.pop();          //  OTHER DATA ARE DISPLAYED IN RESPECTIVE FIELDS
+        document.getElementById("f-name").value = name.join(" ");
         document.getElementById("full-name").value = retrievedData[1];
         document.getElementById("gender").value = retrievedData[3];
         document.getElementById("email").value = retrievedData[2];
